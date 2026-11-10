@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape</title>
+</head>
+<body style="line-height: 2;">
+    <script>
+        let moveinterval
+        const fulllevel = "______________===_______===_________=+=_____=+=_______==___=+=___=+_____+=___==______===____===________=+=___=+=_______==___=+=______=+=____=+=___==______===_______===____=+=____=+=________==___=+=________=+=____=+=___==_______===____===____=+=_____=+=_______==___=+=______=+=____=+=______==___"
+
+        function moveLevel() {
+            let levelElem = document.getElementById("Level")
+            let plrElem = document.getElementById("PLR")
+            let currentText = levelElem.textContent
+
+            if (currentText.length <= 0) {
+                window.location.href="https://docs.google.com/document/d/1Ry0DyoT3t9Vde4b_ET85eG4MMMBRTXiLqLOy5A1b4gA/edit?tab=t.0";
+                stopGame()
+                return
+            }
+
+            if (currentText.indexOf("_") !== 0 && plrElem.innerHTML === ".") {
+                stopGame()
+                return
+            }
+
+            levelElem.textContent = currentText.slice(1)
+        }
+
+        function start() {
+            document.getElementById("Start/Jump").innerHTML = "3"
+            setTimeout(function(){
+                document.getElementById("Start/Jump").innerHTML = "2"
+                setTimeout(function(){
+                    document.getElementById("Start/Jump").innerHTML = "1"
+                    setTimeout(function(){
+                        document.getElementById("Level").textContent = fulllevel
+                        document.getElementById("Start/Jump").innerHTML = "Dodge"
+                        document.getElementById("Start/Jump").setAttribute("onclick", "jump()")
+            
+                        clearInterval(moveinterval)
+                        moveinterval = setInterval(moveLevel, 150)
+                    }, 250);
+                }, 250);
+            }, 250);
+        }
+
+        function stopGame() {
+            clearInterval(moveinterval)
+            document.getElementById("Start/Jump").textContent = "Start"
+            document.getElementById("Start/Jump").setAttribute("onclick", "start()")
+            document.getElementById("Level").textContent = fulllevel
+        }
+
+        function jump() {
+            let plrElem = document.getElementById("PLR")
+            if (plrElem.innerHTML !== "'") {
+                let jumping = 3
+                plrElem.innerHTML = "'"
+                
+                let moveinterval2 = setInterval(function() {
+                    jumping -= 1
+                    if (jumping < 1) {
+                        clearInterval(moveinterval2)
+                        plrElem.innerHTML = "."
+                    }
+                }, 225)
+            }
+        }
+    </script>
+
+    <p style="font-size: x-large; font-weight: 300;">Reinforcement will be here soon.</p>
+    <p style="font-size: x-large; font-weight: 300;">Escape.</p>
+    <br><br><br><br>
+    
+    <p id="PLR" style="font-size:xx-large; font-weight: bolder;">.</p>
+    <p id="Level" style="font-size:xx-large; margin-top: -80px;">______________===_______===_________=+=_____=+=_______==___=+=___=+_____+=___==______===____===________=+=___=+=_______==___=+=______=+=____=+=___==______===_______===____=+=____=+=________==___=+=________=+=____=+=___==_______===____===____=+=_____=+=_______==___=+=______=+=____=+=______==___</p>
+    <br>
+    
+    <button id="Start/Jump" onclick="start()" style="font-size: xx-large;">Start</button>
+</body>
+</html>
